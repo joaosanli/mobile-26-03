@@ -6,6 +6,8 @@ const baseURL = 'https://todo-app-express-backend-rtbt.onrender.com';
 export interface TaskItem {
   _id: string;
   text: string;
+  completed?: boolean;
+  dueDate?: string;
 }
 
 export const getAllTasks = async (
@@ -21,6 +23,8 @@ export const getAllTasks = async (
 
 export const addTask = async (
   text: string,
+  completed: boolean,
+  dueDate: string,
   setText: React.Dispatch<React.SetStateAction<string>>,
   setTasks: React.Dispatch<React.SetStateAction<TaskItem[]>>
 ) => {
@@ -31,7 +35,11 @@ export const addTask = async (
   }
 
   try {
-    await axios.post(`${baseURL}/save`, { text: trimmedText });
+    await axios.post(`${baseURL}/save`, {
+      text: trimmedText,
+      completed,
+      dueDate: dueDate || undefined,
+    });
     setText('');
     await getAllTasks(setTasks);
   } catch (err) {
@@ -42,6 +50,8 @@ export const addTask = async (
 export const updateTask = async (
   taskId: string,
   text: string,
+  completed: boolean,
+  dueDate: string,
   setTasks: React.Dispatch<React.SetStateAction<TaskItem[]>>,
   setText: React.Dispatch<React.SetStateAction<string>>,
   setIsUpdating: React.Dispatch<React.SetStateAction<boolean>>
@@ -53,7 +63,12 @@ export const updateTask = async (
   }
 
   try {
-    await axios.post(`${baseURL}/update`, { _id: taskId, text: trimmedText });
+    await axios.post(`${baseURL}/update`, {
+      _id: taskId,
+      text: trimmedText,
+      completed,
+      dueDate: dueDate || undefined,
+    });
     setText('');
     setIsUpdating(false);
     await getAllTasks(setTasks);

@@ -5,7 +5,7 @@ import { TaskItem as TaskData } from '../utils/handle-api';
 
 interface TaskListProps {
   tasks: TaskData[];
-  onEditTask: (id: string, text: string) => void;
+  onEditTask: (id: string, text: string, completed?: boolean, dueDate?: string) => void;
   onDeleteTask: (id: string) => void;
 }
 
@@ -17,7 +17,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask }) 
       renderItem={({ item }) => (
         <TaskItem
           item={item}
-          onEdit={() => onEditTask(item._id, item.text)}
+          onEdit={() => onEditTask(item._id, item.text, item.completed, item.dueDate)}
           onDelete={() => onDeleteTask(item._id)}
         />
       )}
@@ -26,7 +26,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask }) 
       ListEmptyComponent={
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>Nenhuma tarefa cadastrada</Text>
-          <Text style={styles.emptyText}>Adicione sua primeira tarefa no campo acima.</Text>
+          <Text style={styles.emptyText}>Adicione sua primeira tarefa clicando em Nova Tarefa.</Text>
         </View>
       }
     />
